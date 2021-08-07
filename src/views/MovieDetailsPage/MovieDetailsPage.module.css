@@ -1,0 +1,22 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.icon {
+  margin-right: 5px;
+}
+
+.mainInfo {
+  display: flex;
+}
+
+.info {
+  margin-left: 15px;
+}
+
+.title {
+  font-weight: bold;
+}
