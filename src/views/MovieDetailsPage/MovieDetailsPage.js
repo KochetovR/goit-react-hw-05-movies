@@ -1,7 +1,13 @@
 import { lazy, Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import { NavLink, Route, useRouteMatch, useHistory } from 'react-router-dom';
+import {
+  NavLink,
+  Route,
+  useRouteMatch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
 import * as moviesApi from '../../servise/movies-api';
 import { BiArrowBack } from 'react-icons/bi';
 
@@ -27,6 +33,8 @@ export default function MovieDetailsPage() {
   });
 
   const history = useHistory();
+  const location = useLocation();
+  const historyParam = location.state ? location.state.from : '/';
 
   useEffect(() => {
     moviesApi
@@ -52,9 +60,8 @@ export default function MovieDetailsPage() {
       );
   }, [movieId]);
 
-  const onClickBack = () => {
-    // history.push('/movies?search=')
-    history.goBack();
+  const onClickGoBack = () => {
+    history.push(historyParam);
   };
 
   const {
@@ -69,7 +76,11 @@ export default function MovieDetailsPage() {
     <>
       {movie && (
         <>
-          <button type="button" className={styles.button} onClick={onClickBack}>
+          <button
+            type="button"
+            className={styles.button}
+            onClick={onClickGoBack}
+          >
             <BiArrowBack className={styles.icon} />
             Go back
           </button>
@@ -90,19 +101,31 @@ export default function MovieDetailsPage() {
           <p>Additional information</p>
           <ul>
             <li>
-              <NavLink to={`${url}/cast`}>Cast</NavLink>
+              <NavLink
+                to={{ pathname: `${url}/cast`, state: { from: historyParam } }}
+              >
+                Cast
+              </NavLink>
             </li>
             <li>
-              <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+              <NavLink
+                to={{
+                  pathname: `${url}/reviews`,
+                  state: { from: historyParam },
+                }}
+              >
+                Reviews
+              </NavLink>
             </li>
           </ul>
           <hr></hr>
           <Suspense fallback={<h1>Loading...</h1>}>
-            <Route path={`${url}/cast`}>
-              <Cast movieId={movieId} />
+            <Route path={`/movies/:movieId/cast`}>
+              <Cast />
             </Route>
-            <Route path={`${url}/reviews`}>
-              <Reviews movieId={movieId} />
+
+            <Route path={`/movies/:movieId/reviews`}>
+              <Reviews />
             </Route>
           </Suspense>
         </>

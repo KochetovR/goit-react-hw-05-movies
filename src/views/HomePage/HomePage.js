@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import * as moviesApi from '../../servise/movies-api';
 
 const HomePage = () => {
+  const location = useLocation();
   const [films, setFilms] = useState(null);
 
   useEffect(() => {
@@ -18,7 +19,14 @@ const HomePage = () => {
         <ul>
           {films.map(film => (
             <li key={film.id}>
-              <Link to={`movies/${film.id}`}>{film.original_title}</Link>
+              <Link
+                to={{
+                  pathname: `movies/${film.id}`,
+                  state: { from: location },
+                }}
+              >
+                {film.original_title}
+              </Link>
             </li>
           ))}
         </ul>

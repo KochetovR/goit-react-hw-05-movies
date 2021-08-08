@@ -1,5 +1,5 @@
-import { Switch, Route } from 'react-router';
-import React from 'react';
+import { Switch, Route, Redirect } from 'react-router';
+import React, { Suspense } from 'react';
 import './App.css';
 
 const Navigation = React.lazy(() =>
@@ -20,27 +20,27 @@ const MovieDetailsPage = React.lazy(() =>
 );
 
 const App = () => (
-  <>
-    <Navigation />
+  <Suspense fallback={<h1>Loading...</h1>}>
+    <>
+      <Navigation />
 
-    <Switch>
-      <Route exact path="/">
-        <HomePage />
-      </Route>
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
 
-      <Route path="/movies" exact>
-        <MoviesPage />
-      </Route>
+        <Route path="/movies" exact>
+          <MoviesPage />
+        </Route>
 
-      <Route path="/movies/:movieId">
-        <MovieDetailsPage />
-      </Route>
+        <Route path="/movies/:movieId">
+          <MovieDetailsPage />
+        </Route>
 
-      <Route path="/">
-        <HomePage />
-      </Route>
-    </Switch>
-  </>
+        <Redirect to="/" />
+      </Switch>
+    </>
+  </Suspense>
 );
 
 export default App;

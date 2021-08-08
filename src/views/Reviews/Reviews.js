@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import * as moviesApi from '../../servise/movies-api';
 
 import styles from './Reviews.module.css';
 
-export default function Reviews({ movieId }) {
+export default function Reviews() {
+  const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
